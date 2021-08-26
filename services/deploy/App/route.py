@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from App import app
 from flask import render_template, request, jsonify, make_response
 from flask.wrappers import Response
@@ -145,8 +146,33 @@ def getTunnels():
 
     return data['tunnels'][0]['public_url']
 
-@app.route("/configureVM/", methods=['GET', 'POST'])
-def configureVM():
+@app.route("/configureCloudServices/", methods=['GET', 'POST'])
+def configureCloudServices():
+    pod = request.args.get('pod')
+    cmds = [
+    'apt install curl -y',
+    'apt install unzip -y',
+    'apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools -y',
+    'apt install python3-pip -y',
+    'apt install git -y',
+    'pip3 install flask'
+    'pip3 install jupyter',
+    #'curl -o ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip',
+    #'unzip ngrok.zip',
+    #'/ngrok http 8888',
+    ]
+
+    for x in cmds:
+        stream    = os.popen('kubectl exec '+pod+' -- '+ x)
+        output = stream.readlines()
+        time.sleep(20)
+        print(output)
+    return "Done"
+
+
+
+@app.route("/configureDebian/", methods=['GET', 'POST'])
+def configureDebian():
     pod = request.args.get('pod')
     cmds = [
     'mkdir /var/lib', 
@@ -162,24 +188,12 @@ def configureVM():
     'mkdir /var/cache/apt',
     'mkdir /var/cache/apt/archives',
     'apt update && apt upgrade -y',
-    'apt install curl -y',
-    'apt install unzip -y',
-    'apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools -y',
-    'apt install python3-pip -y',
-    'apt install git -y',
-    'pip3 install flask'
-    'pip3 install jupyter',
-    'curl -o ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip',
-    'unzip ngrok.zip',
-    '/ngrok http 8888',
     ]
-
     for x in cmds:
         stream    = os.popen('kubectl exec '+pod+' -- '+ x)
         output = stream.readlines()
         print(output)
     return "Done"
-
 
 @app.route("/queryCloudVM/", methods=['GET', 'POST'])
 def queryCloudVM():

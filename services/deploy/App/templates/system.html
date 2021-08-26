@@ -10,7 +10,7 @@
       </td>
   </tr>
 </table>
-<button onclick="configureVM()">Configure OS</button>
+<button onclick="configureDebian()">Configure OS</button>
 
 
 <table class="w3-table w3-table-all" style="margin-top: 194px;width: 79%;">
@@ -26,3 +26,18 @@
       </td>
   </tr>
 </table>
+<script>
+    function configureDebian(name){
+        var pod = document.getElementById('pod').value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var resp = this.responseText;
+            document.getElementById('main').innerHTML = resp;
+
+          }
+        }
+        xmlhttp.open("GET", "/configureDebian/?pod="+name);
+        xmlhttp.send();
+  }
+</script>
