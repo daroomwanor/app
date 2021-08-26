@@ -1,0 +1,95 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body onload="loadApp()">
+    <input type="hidden" value="{{user[0][0]}}" id="userID">
+    <div class="w3-container" id="main_container">
+        <div>
+            <h1>Ariel Cloud VMs</h1>
+        </div>
+        <table class="w3-table wa-table-all">
+            <tr>
+                <th>Create Service Pod</th>
+                <td><button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Spawn</button></td>
+            </tr>
+        </table>
+        <table class="w3-table w3-table-all">
+            {% for n in inst %}
+                <tr><td><a href="cloudVM/?name={{n[2]}}">{{n[2]}}</a></td></tr>
+            {% endfor %}
+
+        </table>
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <div id="modalContent">
+                        <table class="w3-table w3-table-all">
+                            <tr>
+                                <th>Name</th><td><input type="text" id="cloudName"></td>
+                            </tr>
+                            <tr>
+                                <th>Kind</th><td><select id="kind"><option value="Pod">Pod</option></select></td>
+                            </tr>
+                            <tr>
+                                <th>Image</th><td>
+                                    <select id="image">
+                                        <option value="ubuntu">Ubuntu</option>
+                                        <option value="ubuntu">Nginx</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <th>CPU Memory</th>
+                                <td><select id ="mem">
+                                    <option value="0.1">0.1</option>
+                                    <option value="0.5">0.5</option>
+                                    <option value="1">1</option>
+                                </select></td>
+                            </tr>
+                            <tr><th><button onclick="createPod()">Spawn</button></th></tr>
+                        </table>
+                    </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    
+    function createPod(){
+        var userID = document.getElementById('userID').value;
+        var name = document.getElementById('cloudName').value;
+        var kind = document.getElementById('kind').value;
+        var image = document.getElementById('image').value;
+        var mem = document.getElementById('mem').value;
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var resp = this.responseText;
+                console.log(resp);
+                window.location.href="/"
+
+            }
+        }
+        xmlhttp.open("GET", "/createCloudVM/?kind="+kind+"&name="+name+"&image="+image+"&mem="+mem+"&user="+userID);
+        xmlhttp.send();
+    }
+     function loadApp(){
+         var userID = document.getElementById('userID').value;
+         if (userID == ""){
+             window.location.href="/";        
+         }
+     }
+
+   
+</script>
+</html>
+

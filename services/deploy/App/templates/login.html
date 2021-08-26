@@ -1,0 +1,99 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<script type="text/javascript">
+    function register_user(){
+        var fname = document.getElementById('fname').value;
+        var lname = document.getElementById('lname').value;
+        var uname = document.getElementById('uname').value;
+        var email = document.getElementById('email').value;
+        var pass = document.getElementById('passwd').value;
+        var vpass = document.getElementById('v-passwd').value;
+        
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var resp = this.responseText;
+                console.log(resp);
+                window.location.href="/?id="+resp;
+            }
+        }
+        xmlhttp.open("GET", "/registerUser/?fname="+fname+"&lname="+lname+"&uname="+uname+"&email="+email+"&pass="+pass);
+        xmlhttp.send();
+        
+    }
+    function login_user(){
+        var email = document.getElementById('email').value;
+        var pass = document.getElementById('passwd').value;
+        
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var resp = this.responseText;
+                console.log(resp);
+                if(resp=="Failed"){
+                    window.location.href="/";
+                
+                }else{
+                    window.location.href="/home/?id="+resp;
+                }
+            }
+        }
+        xmlhttp.open("GET", "/loginUser/?email="+email+"&pass="+pass);
+        xmlhttp.send();
+        
+    }
+    
+
+</script>
+    <div class="w3-container">
+        
+        <table class="w3-table w3-table-all" style="width: 20%;margin-top: 137px;">
+            <tr><th>Login</th></tr>
+            <tr>
+                <th><input type="email" placeholder="Email" id="email"> </th>
+            </tr>
+            <tr>
+                <th><input type="password" placeholder="Password" id="passwd"> </th>
+            </tr>
+            <tr>
+                <th><input type="button" value="login" onclick="login_user()"> </th>
+            </tr>
+        </table>
+        <span style="margin-left: 612px;float: left;margin-top: -119px;">OR</span>
+        <table class="w3-table w3-table-all" style="width: 25%;float: right;margin-top: -208px;margin-right: 63px;">
+            <tr><th>Create Account</th></tr>
+            <tr>
+                <th><input type="text" placeholder="Firstname" id="fname"> </th>
+            </tr>
+            <tr>
+                <th><input type="text" placeholder="Lastname" id="lname"> </th>
+            </tr>
+            <tr>
+                <th><input type="text" placeholder="Username" id="uname"> </th>
+            </tr>
+            <tr>
+                <th><input type="email" placeholder="Email" id="email"> </th>
+            </tr>
+            <tr>    
+                <th><input type="password" placeholder="Password" id="passwd"> </th>
+            </tr>
+            <tr>
+                <th><input type="password" placeholder="Validate Password" id="v-passwd"> </th>
+            </tr>
+            <tr>
+                <th><input type="button" value="register" onclick="register_user()"> </th>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
+

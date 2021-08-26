@@ -1,0 +1,17 @@
+<h3>Terminal_</h3>
+<table class="w3-table w3-table-all" style="margin-left:159px;">
+  <tr>
+    <th><button class="w3-button">root@<input type="button" id="pod" value="{{pod}}">#</button>
+      <input id="terminal" style="width:600px;background-color: black;color: white;" type="" name="" class="code"> 
+      <button  class="w3-button w3-teal" onclick="bashCMD()" class="w3-button">Run</button>
+    </th>
+
+  </tr>
+</table>
+<div class="code" style="background:#19355a;color:white;width: 150%;">
+	<table class="w3-table w3-table-all">
+		{% for n in data %}
+			<tr style="background:#0e213f;"><td style="width: 200px;word-wrap: break-word;"><code style="color:#49ed14;background:#0e213f;">{{n}}</code></td></tr>
+		{% endfor %}
+	</table>
+</div>

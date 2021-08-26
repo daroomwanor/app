@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Ariel App Hub</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+.w3-sidebar {
+  z-index: 3;
+  width: 250px;
+  top: 43px;
+  bottom: 0;
+  height: inherit;
+}
+pre.code {
+  white-space: pre-wrap;
+}
+pre.code:before {
+  counter-reset: listing;
+}
+pre.code code {
+  counter-increment: listing;
+}
+pre.code code::before {
+  content: counter(listing) ". ";
+  display: inline-block;
+  width: 8em;         /* doesn't work */
+  padding-left: auto; /* doesn't work */
+  margin-left: auto;  /* doesn't work */
+  text-align: right;  /* doesn't work */
+}
+
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+    <a href="http://arielapps.com/home/?id={{data[0][0]}}" class="w3-bar-item w3-button w3-theme-l1">Ariel Cloud Hub</a>
+    <a href="/tutorials" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Tutorials</a>
+    <a href="/courses" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Courses</a>
+    <a href="/projects" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Projects</a>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar" style="background-color: #6c94cb !important;">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+    <i class="fa fa-remove"></i>
+  </a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="#" onclick="navBar(1)" id="1">System Packages</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="#" onclick="navBar(2)" id="2">Shellscript</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="#" onclick="navBar(4)" id="4">SQL Database</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="#" onclick="navBar(3)" id="3">Jupyter IDE</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="#" onclick="navBar(5)" id="5">Cloud VM Settings</a>
+
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+<div class="w3-main" style="margin-left:250px">
+
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container" id="main">
+      
+    </div>
+    <div class="w3-third w3-container">
+      
+    </div>
+  </div>
+
+  <!--Modal--->
+
+  <div id="main_modal" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('main_modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <div id="modalContent">
+          <table class="w3-table w3-table-all">
+            <tr>
+              <th><button onclick="jupyterIDE('{{data[0][1]}}',true,false)">Refresh</button></th><td><a onclick="jupyterIDE('{{data[0][1]}}',false,true)">Jupyter Cloud IDE</a></td>
+            </tr>
+          </table>
+        </div>
+        </div>
+      </div>
+  </div>
+
+<!-- END MAIN -->
+</div>
+<style>
+code {
+  font-family: Consolas,"courier new";
+  color: crimson;
+  background-color: #f1f1f1;
+  padding: 2px;
+  font-size: 105%;
+}
+</style>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+<script type="text/javascript">
+  function bashCMD(){
+    var cmd = document.getElementById('terminal').value;
+    var pod = document.getElementById('pod').value;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        var resp = this.responseText;
+        document.getElementById('main').innerHTML = resp;
+
+      }
+    }
+    xmlhttp.open("GET", "/bashCloudVM/?pod="+pod+"&cmd="+cmd);
+    xmlhttp.send();
+  }
+
+  function deletePod(){
+    var pod = document.getElementById('pod').value;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        var resp = this.responseText;
+        console.log(resp);
+        window.location.href="/"
+
+      }else{
+        window.location.href="/"
+
+      }
+    }
+    xmlhttp.open("GET", "/deleteCloudVM/?pod="+pod);
+    xmlhttp.send();
+  }
+
+  function navBar(e){
+    document.getElementById('1').style.backgroundColor="Gray";
+    document.getElementById('2').style.backgroundColor="Gray";
+    document.getElementById('3').style.backgroundColor="Gray";
+    document.getElementById('4').style.backgroundColor="Gray";
+    document.getElementById('5').style.backgroundColor="Gray";
+    document.getElementById(e).style.backgroundColor="White";
+    if(e == '1'){
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const name = urlParams.get('name');
+      systemPackages(name,false,false);
+      console.log(name);
+    }
+    if(e == '2'){
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const name = urlParams.get('name');
+      terminalShell(name);
+      console.log(name);
+    }
+
+    if(e == '3'){
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const name = urlParams.get('name');
+      jupyterIDE(name,false,false);
+      console.log(name);
+    }
+
+  }
+    
+    
+    
+  function systemPackages(name){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        var resp = this.responseText;
+        document.getElementById('main').innerHTML = resp;
+
+      }
+    }
+    xmlhttp.open("GET", "/systemPage/?pod="+name);
+    xmlhttp.send();
+  }
+    
+    
+  function terminalShell(name){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        var resp = this.responseText;
+        document.getElementById('main').innerHTML = resp;
+
+      }
+    }
+    xmlhttp.open("GET", "/bashCloudVM/?pod="+name+"&cmd=ps -aux");
+    xmlhttp.send();
+  }
+
+
+  function query(name){
+    var val = document.getElementById('query').value;
+    var pod = document.getElementById('pod').value;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        var resp = this.responseText;
+        document.getElementById('main').innerHTML = resp;
+
+      }
+    }
+    xmlhttp.open("GET", "/queryCloudVM/?pod="+pod+"&q="+val);
+    xmlhttp.send();
+  }
+
+  function jupyterIDE(name,refresh,openIDE){
+    if(refresh == true){
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+          var resp = this.responseText;
+          document.getElementById('main').innerHTML = resp;
+
+        }
+      }
+      xmlhttp.open("GET", "/refreshNgrok/?pod="+name);
+      xmlhttp.send();
+
+    }else{
+      document.getElementById('main_modal').style.display='block';
+
+    }
+
+    if(openIDE == true){
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+          var resp = this.responseText;
+          window.open(resp, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+
+        }
+      }
+      xmlhttp.open("GET", "/getTunnels/?pod="+name);
+      xmlhttp.send();
+    } 
+  }
+
+</script>
+
+</body>
+</html>

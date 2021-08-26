@@ -1,0 +1,19 @@
+<h1>Query</h1>
+<div><button class="w3-button">sql@<input disabled="True" id="pod" value="{{pod}}">#</button></div>
+<table class="w3-table w3-table-all">
+  <tr>
+    <th>
+      <textarea id="query" style="width:600px;height:200px;background-color: black;color: white;" type="" name="" class="code"> </textarea>
+      <button  class="w3-button w3-teal" onclick="query()" class="w3-button">Run</button>
+    </th>
+
+  </tr>
+</table>
+<div class="code" style="background:#19355a;color:white;width: 100%;">
+	<pre>
+		{% for n in data %}
+			<code style="background:#0e213f;margin-left: -71px ">{{n}}</code>
+		{% endfor %}
+	</pre>
+</div>
+
